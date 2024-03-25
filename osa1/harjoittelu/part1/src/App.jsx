@@ -24,7 +24,7 @@ const History = (props) => {
   return <div> button press history: {props.allClicks.join(" ")} </div>;
 };
 
-const App = () => {
+const Matikka = () => {
   const [zeros, setZeros] = useState(0);
   const [counter, setCounter] = useState(0);
   const [allClicks, setAll] = useState([]);
@@ -46,10 +46,29 @@ const App = () => {
     setTotal(total + 1);
     setAll(allClicks.concat("0"));
   };
-
   // setTimeout(() => setCounter(counter + 1), 1000);
   console.log(counter);
   console.log(zeros);
+  return (
+    <>
+      <h1>Matikka</h1>
+      <div>
+        <Display counter={counter} />
+        <Button handleClick={increaseByOne} text="plus" />
+        <Button handleClick={setToZero} text="nollaa" />
+        <History allClicks={allClicks} />
+        <p>Total on: {total}</p>
+      </div>
+    </>
+  );
+};
+
+const App = () => {
+  const now = new Date();
+  const a = 10;
+  const b = 20;
+  console.log(now, a + b);
+
   return (
     <>
       <Hello imperatiivi="pasko" />
@@ -61,13 +80,8 @@ const App = () => {
       <p>
         {a} plus {b} is {a + b}
       </p>
-      <div>
-        <Display counter={counter} />
-        <Button handleClick={increaseByOne} text="plus" />
-        <Button handleClick={setToZero} text="nollaa" />
-        <History allClicks={allClicks} />
-        <p>Total on: {total}</p>
-      </div>
+      <hr />
+      <Matikka />
     </>
   );
 };
