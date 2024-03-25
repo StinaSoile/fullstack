@@ -8,10 +8,39 @@ const Button = ({ handleClick, text }) => (
 
 const Feedback = ({ value, text }) => {
   return (
-    <p>
-      {text}
-      {value}
-    </p>
+    <li
+      style={{
+        listStyleType: "none",
+      }}
+    >
+      {text}: {value}
+    </li>
+  );
+};
+
+const Average = ({ avg }) => {
+  if (!Number.isFinite(avg)) avg = 0;
+  return (
+    <li
+      style={{
+        listStyleType: "none",
+      }}
+    >
+      average: {avg}
+    </li>
+  );
+};
+
+const Positive = ({ per }) => {
+  if (!Number.isFinite(per)) per = 0;
+  return (
+    <li
+      style={{
+        listStyleType: "none",
+      }}
+    >
+      positive: {per}%
+    </li>
   );
 };
 
@@ -36,6 +65,10 @@ const App = () => {
     console.log(bad);
   };
 
+  const all = good + neutral + bad;
+  const avg = (good - bad) / all;
+  const per = (good / all) * 100;
+
   return (
     <div>
       <Header text="Give feedback" />
@@ -43,9 +76,14 @@ const App = () => {
       <Button handleClick={increaseNeutral} text="neutral" />
       <Button handleClick={increaseBad} text="bad" />
       <Header text="Statistics" />
-      <Feedback value={good} text="good: " />
-      <Feedback value={neutral} text="neutral: " />
-      <Feedback value={bad} text="bad: " />
+      <ul>
+        <Feedback value={good} text="good" />
+        <Feedback value={neutral} text="neutral" />
+        <Feedback value={bad} text="bad" />
+        <Feedback value={all} text="all" />
+        <Average avg={avg} />
+        <Positive per={per} />
+      </ul>
     </div>
   );
 };
