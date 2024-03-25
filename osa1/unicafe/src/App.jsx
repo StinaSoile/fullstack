@@ -44,6 +44,23 @@ const Positive = ({ per }) => {
   );
 };
 
+const Statistics = ({ good, neutral, bad }) => {
+  const all = good + neutral + bad;
+  if (all === 0) return <p>No feedback given</p>;
+  const avg = (good - bad) / all;
+  const per = (good / all) * 100;
+  return (
+    <ul>
+      <Feedback value={good} text="good" />
+      <Feedback value={neutral} text="neutral" />
+      <Feedback value={bad} text="bad" />
+      <Feedback value={all} text="all" />
+      <Average avg={avg} />
+      <Positive per={per} />
+    </ul>
+  );
+};
+
 const App = () => {
   // tallenna napit omaan tilaansa
   const [good, setGood] = useState(0);
@@ -65,10 +82,6 @@ const App = () => {
     console.log(bad);
   };
 
-  const all = good + neutral + bad;
-  const avg = (good - bad) / all;
-  const per = (good / all) * 100;
-
   return (
     <div>
       <Header text="Give feedback" />
@@ -76,14 +89,7 @@ const App = () => {
       <Button handleClick={increaseNeutral} text="neutral" />
       <Button handleClick={increaseBad} text="bad" />
       <Header text="Statistics" />
-      <ul>
-        <Feedback value={good} text="good" />
-        <Feedback value={neutral} text="neutral" />
-        <Feedback value={bad} text="bad" />
-        <Feedback value={all} text="all" />
-        <Average avg={avg} />
-        <Positive per={per} />
-      </ul>
+      <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
   );
 };
