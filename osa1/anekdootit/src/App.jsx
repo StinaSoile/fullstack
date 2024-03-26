@@ -1,7 +1,11 @@
 import { useState } from "react";
 
-const Button = ({ handleClick }) => {
-  return <button onClick={handleClick}>Next anecdote</button>;
+const Button = ({ handleClick, text }) => {
+  return <button onClick={handleClick}>{text}</button>;
+};
+
+const VoteCount = ({ votes, selected }) => {
+  return <p>has {votes[selected]} votes</p>;
 };
 
 const App = () => {
@@ -16,16 +20,29 @@ const App = () => {
     "The only way to go fast, is to go well.",
   ];
 
+  const [votes, setVotes] = useState(Array(anecdotes.length).fill(0));
+  // console.log(votes);
+
   const [selected, setSelected] = useState(0);
-  const index = Math.floor(Math.random() * anecdotes.length);
 
   const selectNew = () => {
-    setSelected(index);
+    setSelected(Math.floor(Math.random() * anecdotes.length));
   };
+
+  const vote = () => {
+    const copy = { ...votes };
+    copy[selected] += 1;
+    setVotes(copy);
+    console.log("äänestetty anekdoottia ", selected);
+    console.log("Ääniä nyt ", copy[selected]);
+  };
+
   return (
     <div>
       <p>{anecdotes[selected]}</p>
-      <Button handleClick={selectNew} />
+      <VoteCount votes={votes} selected={selected} />
+      <Button handleClick={selectNew} text="Next anecdote" />
+      <Button handleClick={vote} text="Vote" />
     </div>
   );
 };
