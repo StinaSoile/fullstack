@@ -6,41 +6,12 @@ const Button = ({ handleClick, text }) => (
   <button onClick={handleClick}>{text}</button>
 );
 
-const Feedback = ({ value, text }) => {
+const StatisticLine = ({ value, text }) => {
   return (
-    <li
-      style={{
-        listStyleType: "none",
-      }}
-    >
-      {text}: {value}
-    </li>
-  );
-};
-
-const Average = ({ avg }) => {
-  if (!Number.isFinite(avg)) avg = 0;
-  return (
-    <li
-      style={{
-        listStyleType: "none",
-      }}
-    >
-      average: {avg}
-    </li>
-  );
-};
-
-const Positive = ({ per }) => {
-  if (!Number.isFinite(per)) per = 0;
-  return (
-    <li
-      style={{
-        listStyleType: "none",
-      }}
-    >
-      positive: {per}%
-    </li>
+    <tr>
+      <td>{text}</td>
+      <td>{value}</td>
+    </tr>
   );
 };
 
@@ -50,19 +21,20 @@ const Statistics = ({ good, neutral, bad }) => {
   const avg = (good - bad) / all;
   const per = (good / all) * 100;
   return (
-    <ul>
-      <Feedback value={good} text="good" />
-      <Feedback value={neutral} text="neutral" />
-      <Feedback value={bad} text="bad" />
-      <Feedback value={all} text="all" />
-      <Average avg={avg} />
-      <Positive per={per} />
-    </ul>
+    <table>
+      <tbody>
+        <StatisticLine value={good} text="good" />
+        <StatisticLine value={neutral} text="neutral" />
+        <StatisticLine value={bad} text="bad" />
+        <StatisticLine value={all} text="all" />
+        <StatisticLine value={avg} text="average" />
+        <StatisticLine value={per} text="positive" />
+      </tbody>
+    </table>
   );
 };
 
 const App = () => {
-  // tallenna napit omaan tilaansa
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
