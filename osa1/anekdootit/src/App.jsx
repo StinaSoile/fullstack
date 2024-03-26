@@ -5,7 +5,12 @@ const Button = ({ handleClick, text }) => {
 };
 
 const VoteCount = ({ votes, selected }) => {
+  if (selected === -1) return <p>no anecdote yet</p>;
   return <p>has {votes[selected]} votes</p>;
+};
+
+const Header = ({ text }) => {
+  return <h1>{text}</h1>;
 };
 
 const App = () => {
@@ -21,9 +26,10 @@ const App = () => {
   ];
 
   const [votes, setVotes] = useState(Array(anecdotes.length).fill(0));
-  // console.log(votes);
 
   const [selected, setSelected] = useState(0);
+
+  const [indexOfBest, setBest] = useState(-1);
 
   const selectNew = () => {
     setSelected(Math.floor(Math.random() * anecdotes.length));
@@ -33,16 +39,25 @@ const App = () => {
     const copy = { ...votes };
     copy[selected] += 1;
     setVotes(copy);
-    console.log("äänestetty anekdoottia ", selected);
-    console.log("Ääniä nyt ", copy[selected]);
+    // console.log("äänestetty anekdoottia ", selected);
+    // console.log("Ääniä nyt ", copy[selected]);
+
+    if (copy[selected] > votes[indexOfBest] || indexOfBest === -1) {
+      setBest(selected);
+    }
   };
 
+  // console.log(indexOfBest);
   return (
     <div>
+      <Header text="Anecdote of the day" />
       <p>{anecdotes[selected]}</p>
       <VoteCount votes={votes} selected={selected} />
       <Button handleClick={selectNew} text="Next anecdote" />
       <Button handleClick={vote} text="Vote" />
+      <Header text="Anecdote with most votes" />
+      <p>{anecdotes[indexOfBest]}</p>
+      <VoteCount votes={votes} selected={indexOfBest} />
     </div>
   );
 };
