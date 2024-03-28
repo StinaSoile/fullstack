@@ -1,42 +1,4 @@
-const Header = ({ course }) => <h1>{course.name}</h1>;
-
-const Total = ({ course }) => {
-  let sum = course.parts.reduce((pre, curr) => pre + curr.exercises, 0);
-
-  return <p>Total of {sum} exercises</p>;
-};
-
-const Part = ({ part }) => {
-  return (
-    <p>
-      {part.name}, {part.exercises} exercises
-    </p>
-  );
-};
-
-const Content = ({ course }) => {
-  return (
-    <>
-      {course.parts.map((part) => (
-        <Part key={part.id} part={part} />
-      ))}
-      <Total course={course} />
-    </>
-    //   <Part part={course.parts[0]} />
-    //   <Part part={course.parts[1]} />
-    //   <Part part={course.parts[2]} />
-    //   <Total course={course} />
-  );
-};
-
-const Course = ({ course }) => {
-  return (
-    <div>
-      <Header course={course} />
-      <Content course={course} />
-    </div>
-  );
-};
+import Course from "./components/Course";
 
 const Courses = ({ courses }) => {
   return (
@@ -46,21 +8,9 @@ const Courses = ({ courses }) => {
       ))}
     </>
   );
-  // return (
-  //   <div>
-  //     <Header course={course} />
-  //     <Content course={course} />
-  //   </div>
-  // );
 };
-// "Sovelluksen komponenttirakenne voi olla esim. seuraava:
-// App
-//   Course
-//     Header
-//     Content
-//       Part
-//       Part
-//       ...
+
+const Header = ({ text }) => <h1>{text}</h1>;
 
 const App = () => {
   const courses = [
@@ -83,11 +33,11 @@ const App = () => {
           exercises: 14,
           id: 3,
         },
-        {
-          name: "State of art",
-          exercises: 47,
-          id: 4,
-        },
+        // {
+        //   name: "State of art",
+        //   exercises: 47,
+        //   id: 4,
+        // },
       ],
     },
     {
@@ -110,6 +60,7 @@ const App = () => {
 
   return (
     <div>
+      <Header text="Web development curriculum" />
       <Courses courses={courses} />
     </div>
   );
