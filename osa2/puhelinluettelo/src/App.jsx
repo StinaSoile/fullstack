@@ -8,12 +8,19 @@ const App = () => {
     return <li>{person.name}</li>;
   };
 
+  const isPerson = (props) => {
+    return props.name === newName;
+  };
+
   const addPerson = (event) => {
     event.preventDefault();
     const personObject = {
       name: newName,
     };
-
+    if (persons.find(isPerson)) {
+      alert(`${newName} is already added to phonebook`);
+      return;
+    }
     setPersons(persons.concat(personObject));
     setNewName("");
   };
