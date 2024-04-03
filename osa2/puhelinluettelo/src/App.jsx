@@ -10,6 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNmb, setNewNmb] = useState('')
   const [filterValue, setNewFilter] = useState('')
+  // const [removablePerson, setNewRemovable] =useState('')
 
   useEffect(() => {
     personService.getAll().then((initData) => setPersons(initData))
@@ -54,6 +55,15 @@ const App = () => {
     person.name.toLowerCase().includes(filterValue.toLowerCase())
   )
 
+  const destroy = (person) => {
+    if (window.confirm(`Delete ${person.name}?`)) {
+      personService.destroy(person).then((deletedPerson) => {
+        // console.log(deletedPerson)
+        setPersons(persons.filter((person) => person.id !== deletedPerson.id))
+      })
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -67,7 +77,7 @@ const App = () => {
         handleNmbChange={handleNmbChange}
       />
       <h2>Numbers</h2>
-      <Persons personsToShow={personsToShow} />
+      <Persons personsToShow={personsToShow} destroy={destroy} />
     </div>
   )
 }
