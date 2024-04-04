@@ -1,7 +1,14 @@
-export const Person = ({ person, destroy }) => {
+export const Person = ({ person, destroy, personValuesToForm }) => {
   return (
     <li>
-      {person.name} {person.number}
+      <span
+        onClick={() => {
+          personValuesToForm(person)
+        }}
+      >
+        {person.name}
+      </span>{' '}
+      {person.number}
       <button
         onClick={() => {
           destroy(person)

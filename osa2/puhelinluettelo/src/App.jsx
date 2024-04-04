@@ -26,8 +26,27 @@ const App = () => {
       name: newName,
       number: newNmb,
     }
+
     if (persons.find(isPerson)) {
-      alert(`${newName} is already added to phonebook`)
+      if (
+        window.confirm(
+          `${newName} is already added to phonebook. Replace the old number with a new one?`
+        )
+      ) {
+        const origPerson = persons.find(isPerson)
+        const newPerson = { ...personObject, id: origPerson.id }
+        personService.change(newPerson).then((returnedPerson) => {
+          console.log(returnedPerson)
+          setPersons(
+            persons.map((person) =>
+              person === origPerson ? newPerson : person
+            )
+          )
+          setNewName('')
+          setNewNmb('')
+          return
+        })
+      }
       return
     }
     personService.create(personObject).then((returnedPerson) => {
@@ -35,9 +54,6 @@ const App = () => {
       setNewName('')
       setNewNmb('')
     })
-    // setPersons(persons.concat(personObject))
-    // setNewName('')
-    // setNewNmb('')
   }
 
   const handleFilter = (event) => {
@@ -64,6 +80,12 @@ const App = () => {
     }
   }
 
+  const personValuesToForm = (person) => {
+    console.log(person)
+    setNewName(person.name)
+    setNewNmb(person.number)
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -77,7 +99,11 @@ const App = () => {
         handleNmbChange={handleNmbChange}
       />
       <h2>Numbers</h2>
-      <Persons personsToShow={personsToShow} destroy={destroy} />
+      <Persons
+        personsToShow={personsToShow}
+        destroy={destroy}
+        personValuesToForm={personValuesToForm}
+      />
     </div>
   )
 }
