@@ -22,13 +22,16 @@ const App = () => {
     setNewCountry(event.target.value);
   };
 
+  const show = (country) => {
+    setNewCountry(country);
+  };
   return (
     <div>
       <CountryForm
         newCountry={newCountry}
         handleCountryChange={handleCountryChange}
       />
-      <Information countries={countriesToShow} />
+      <Information countries={countriesToShow} show={show} />
     </div>
   );
 };
