@@ -1,7 +1,6 @@
 let timeoutId
 export const Notification = ({ message, setNewMessage }) => {
-  const origMsg = `${message}`
-  if (message === null) {
+  if (message.msg === null) {
     return null
   }
 
@@ -9,10 +8,9 @@ export const Notification = ({ message, setNewMessage }) => {
     clearTimeout(timeoutId)
   }
   timeoutId = setTimeout(() => {
-    setNewMessage(null)
-    console.log(origMsg)
-    console.log(message)
+    setNewMessage({ msg: null, err: false })
   }, 5000)
-
-  return <div className="notification">{message}</div>
+  let className = 'notification'
+  if (message.err) className = 'error'
+  return <div className={className}>{message.msg}</div>
 }

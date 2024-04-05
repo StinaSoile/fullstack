@@ -11,7 +11,10 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNmb, setNewNmb] = useState('')
   const [filterValue, setNewFilter] = useState('')
-  const [notificationMessage, setNewMessage] = useState(null)
+  const [notificationMessage, setNewMessage] = useState({
+    msg: null,
+    err: false,
+  })
   // const [removablePerson, setNewRemovable] =useState('')
 
   useEffect(() => {
@@ -46,15 +49,19 @@ const App = () => {
                 person === origPerson ? newPerson : person
               )
             )
-            setNewMessage(
-              `Changed ${returnedPerson.name}'s number from ${origPerson.number} to ${newPerson.number}`
-            )
+            setNewMessage({
+              msg: `Changed ${returnedPerson.name}'s number from ${origPerson.number} to ${newPerson.number}`,
+              err: false,
+            })
             setNewName('')
             setNewNmb('')
             return
           })
           .catch((error) => {
-            console.log(error)
+            setNewMessage({
+              msg: `${newPerson.name} is already removed from server`,
+              err: true,
+            })
           })
       }
       return
@@ -63,7 +70,7 @@ const App = () => {
       setPersons(persons.concat(returnedPerson))
       setNewName('')
       setNewNmb('')
-      setNewMessage(`Added ${returnedPerson.name}`)
+      setNewMessage({ msg: `Added ${returnedPerson.name}`, err: false })
     })
   }
 
@@ -84,11 +91,19 @@ const App = () => {
 
   const remove = (person) => {
     if (window.confirm(`Delete ${person.name}?`)) {
-      personService.remove(person).then((deletedPerson) => {
-        // console.log(deletedPerson)
-        setPersons(persons.filter((person) => person.id !== deletedPerson.id))
-        setNewMessage(`${deletedPerson.name} removed`)
-      })
+      personService
+        .remove(person)
+        .then((deletedPerson) => {
+          // console.log(deletedPerson)
+          setPersons(persons.filter((person) => person.id !== deletedPerson.id))
+          setNewMessage({ msg: `${deletedPerson.name} removed`, err: false })
+        })
+        .catch((error) => {
+          setNewMessage({
+            msg: `${person.name} is already removed from server`,
+            err: true,
+          })
+        })
     }
   }
 
