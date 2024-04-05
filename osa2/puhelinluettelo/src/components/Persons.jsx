@@ -1,13 +1,13 @@
 import { Person } from './Person'
 
-export const Persons = ({ personsToShow, destroy, personValuesToForm }) => {
+export const Persons = ({ personsToShow, remove, personValuesToForm }) => {
   return (
     <ul>
       {personsToShow.map((person) => (
         <Person
           key={person.name}
           person={person}
-          destroy={destroy}
+          remove={remove}
           personValuesToForm={personValuesToForm}
         />
       ))}

@@ -4,12 +4,14 @@ import { Persons } from './components/Persons'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import personService from './services/persons'
+import { Notification } from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNmb, setNewNmb] = useState('')
   const [filterValue, setNewFilter] = useState('')
+  const [notificationMessage, setNewMessage] = useState(null)
   // const [removablePerson, setNewRemovable] =useState('')
 
   useEffect(() => {
@@ -35,17 +37,25 @@ const App = () => {
       ) {
         const origPerson = persons.find(isPerson)
         const newPerson = { ...personObject, id: origPerson.id }
-        personService.change(newPerson).then((returnedPerson) => {
-          console.log(returnedPerson)
-          setPersons(
-            persons.map((person) =>
-              person === origPerson ? newPerson : person
+        personService
+          .change(newPerson)
+          .then((returnedPerson) => {
+            console.log(returnedPerson)
+            setPersons(
+              persons.map((person) =>
+                person === origPerson ? newPerson : person
+              )
             )
-          )
-          setNewName('')
-          setNewNmb('')
-          return
-        })
+            setNewMessage(
+              `Changed ${returnedPerson.name}'s number from ${origPerson.number} to ${newPerson.number}`
+            )
+            setNewName('')
+            setNewNmb('')
+            return
+          })
+          .catch((error) => {
+            console.log(error)
+          })
       }
       return
     }
@@ -53,6 +63,7 @@ const App = () => {
       setPersons(persons.concat(returnedPerson))
       setNewName('')
       setNewNmb('')
+      setNewMessage(`Added ${returnedPerson.name}`)
     })
   }
 
@@ -71,11 +82,12 @@ const App = () => {
     person.name.toLowerCase().includes(filterValue.toLowerCase())
   )
 
-  const destroy = (person) => {
+  const remove = (person) => {
     if (window.confirm(`Delete ${person.name}?`)) {
-      personService.destroy(person).then((deletedPerson) => {
+      personService.remove(person).then((deletedPerson) => {
         // console.log(deletedPerson)
         setPersons(persons.filter((person) => person.id !== deletedPerson.id))
+        setNewMessage(`${deletedPerson.name} removed`)
       })
     }
   }
@@ -89,6 +101,10 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification
+        message={notificationMessage}
+        setNewMessage={setNewMessage}
+      />
       <Filter filterValue={filterValue} handleFilter={handleFilter} />
       <h2>Add new</h2>
       <PersonForm
@@ -101,7 +117,7 @@ const App = () => {
       <h2>Numbers</h2>
       <Persons
         personsToShow={personsToShow}
-        destroy={destroy}
+        remove={remove}
         personValuesToForm={personValuesToForm}
       />
     </div>

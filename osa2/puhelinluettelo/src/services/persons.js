@@ -11,7 +11,7 @@ const create = (newObject) => {
   return request.then((response) => response.data)
 }
 
-const destroy = (person) => {
+const remove = (person) => {
   const request = axios.delete(`${baseUrl}/${person.id}`)
   return request.then((response) => response.data)
 }
@@ -21,7 +21,7 @@ const change = (newObject) => {
   return request.then((response) => response.data)
 }
 
-export default { getAll, create, destroy, change }
+export default { getAll, create, remove, change }
 
 // Tarkoittaa:
 // export default {
