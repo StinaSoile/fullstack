@@ -8,8 +8,8 @@ const getAll = () => {
   return request.then((response) => response.data);
 };
 
-const getOne = ({ countries }) => {
-  const country = countries[0].toLowerCase();
+const getOne = (c) => {
+  const country = c.toLowerCase();
   const request = axios.get(`${baseUrl}name/${country}`);
   return request.then((response) => response.data);
 };

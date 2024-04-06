@@ -1,11 +1,23 @@
+import { useState } from "react";
 import { CountryInfo } from "./CountryInfo";
 import { CountryList } from "./CountryList";
 
-export const Information = ({ countries, show }) => {
-  if (countries.length == 1) {
-    return <CountryInfo countries={countries} />;
+export const Information = ({
+  countries,
+  show,
+  selectedCountry,
+  setSelected,
+}) => {
+  if (selectedCountry) {
+    return <CountryInfo c={selectedCountry} />;
   }
   if (countries.length <= 10) {
-    return <CountryList countries={countries} show={show} />;
+    return (
+      <CountryList
+        setSelected={setSelected}
+        countries={countries}
+        show={show}
+      />
+    );
   } else return <p>Too many matches, specify another filter</p>;
 };

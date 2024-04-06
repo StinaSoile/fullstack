@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import countryService from "../services/countries";
 import "../index.css";
 
-export const CountryInfo = ({ countries }) => {
+export const CountryInfo = ({ c }) => {
   const [country, setCountry] = useState({
     capital: "",
     area: "",
@@ -10,7 +10,7 @@ export const CountryInfo = ({ countries }) => {
     flag: {},
   });
   useEffect(() => {
-    countryService.getOne({ countries }).then((response) => {
+    countryService.getOne(c).then((response) => {
       setCountry({
         capital: response.capital[0],
         area: response.area,
@@ -21,7 +21,7 @@ export const CountryInfo = ({ countries }) => {
   }, []);
   return (
     <>
-      <h2>{countries}</h2>
+      <h2>{c}</h2>
       <p>capital: {country.capital}</p>
       <p>area: {country.area}</p>
       <p>languages:</p>
