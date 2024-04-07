@@ -9,7 +9,7 @@ export const Information = ({
   setSelected,
 }) => {
   if (selectedCountry) {
-    return <CountryInfo c={selectedCountry} />;
+    return <CountryInfo countryName={selectedCountry} />;
   }
   if (countries.length <= 10) {
     return (

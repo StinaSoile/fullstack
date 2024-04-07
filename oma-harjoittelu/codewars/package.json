@@ -1,0 +1,12 @@
+{
+  "name": "codewars",
+  "version": "1.0.0",
+  "description": "codewars-tehtavien tekoon",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Stina Palomäki",
+  "license": "ISC"
+}

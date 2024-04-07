@@ -25,8 +25,6 @@ const App = () => {
     const v = event.target.value;
     setSearchedText(v);
 
-    console.log("a");
-
     const cc = countries.filter((c) =>
       c.toLowerCase().includes(v.toLowerCase())
     );
