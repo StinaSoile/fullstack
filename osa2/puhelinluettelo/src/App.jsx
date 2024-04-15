@@ -94,7 +94,7 @@ const App = () => {
       personService
         .remove(person)
         .then((deletedPerson) => {
-          // console.log(deletedPerson)
+          console.log(deletedPerson)
           setPersons(persons.filter((person) => person.id !== deletedPerson.id))
           setNewMessage({ msg: `${deletedPerson.name} removed`, err: false })
         })
