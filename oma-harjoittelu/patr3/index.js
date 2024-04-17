@@ -1,6 +1,9 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
+const mongoose = require('mongoose')
+const Note = require('./models/note')
+
 
 app.use(cors())
 app.use(express.json())
@@ -28,7 +31,9 @@ app.get('/', (request, response) => {
 })
 
 app.get('/api/notes', (request, response) => {
-  response.json(notes)
+  Note.find({}).then(notes => {
+    response.json(notes)
+  })
 })
 
 app.get('/api/notes/:id', (request, response) => {
@@ -71,6 +76,20 @@ app.post('/api/notes', (request, response) => {
 
   response.json(note)
 })
+
+// const password = process.argv[2]
+// const url =
+//   `mongodb+srv://StinaSoile:${password}@fullstack-course-cluste.ixcnawg.mongodb.net/noteApp?retryWrites=true&w=majority&appName=fullstack-course-cluster1`
+
+// mongoose.set('strictQuery', false)
+// mongoose.connect(url)
+
+// const noteSchema = new mongoose.Schema({
+//   content: String,
+//   important: Boolean,
+// })
+
+// const Note = mongoose.model('Note', noteSchema)
 
 const PORT = 3001
 app.listen(PORT, () => {
