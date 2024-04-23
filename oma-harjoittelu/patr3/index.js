@@ -1,97 +1,98 @@
-const express = require('express')
-const app = express()
-const cors = require('cors')
-const mongoose = require('mongoose')
-const Note = require('./models/note')
+const app = require('./app') // varsinainen Express-sovellus
+const config = require('./utils/config')
+const logger = require('./utils/logger')
 
-
-app.use(cors())
-app.use(express.json())
-app.use(express.static('dist'))
-
-let notes = [
-  {
-    id: 1,
-    content: "HTML is easy",
-    important: true
-  },
-  {
-    id: 2,
-    content: "Browser can execute only JavaScript",
-    important: false
-  },
-  {
-    id: 3,
-    content: "GET and POST are the most important methods of HTTP protocol",
-    important: true
-  }
-]
-app.get('/', (request, response) => {
-  response.send('<h1>Hello World!</h1>')
+app.listen(config.PORT, () => {
+  logger.info(`Server running on port ${config.PORT}`)
 })
 
-app.get('/api/notes', (request, response) => {
-  Note.find({}).then(notes => {
-    response.json(notes)
-  })
-})
+// require('dotenv').config()
+// const express = require('express')
+// const app = express()
+// const cors = require('cors')
+// const mongoose = require('mongoose')
+// const Note = require('./models/note')
 
-app.get('/api/notes/:id', (request, response) => {
-  const id = request.params.id
-  const note = notes.find(note => note.id === id)
-  if (note) { response.json(note) }
-  else { response.status(404).end() }
-})
 
-app.delete('/api/notes/:id', (request, response) => {
-  const id = Number(request.params.id)
-  notes = notes.filter(note => note.id !== id)
+// const errorHandler = (error, request, response, next) => {
+//   console.error(error.message)
 
-  response.status(204).end()
-})
+//   if (error.name === 'CastError') {
+//     return response.status(400).send({ error: 'malformatted id' })
+//   }
 
-const generateId = () => {
-  const maxId = notes.length > 0
-    ? Math.max(...notes.map(n => n.id))
-    : 0
-  return maxId + 1
-}
+//   next(error)
+// }
 
-app.post('/api/notes', (request, response) => {
-  const body = request.body
+// app.use(express.static('dist'))
+// app.use(cors())
+// app.use(express.json())
+// app.use(errorHandler)
 
-  if (!body.content) {
-    return response.status(400).json({
-      error: 'content missing'
-    })
-  }
 
-  const note = {
-    content: body.content,
-    important: body.important || false,
-    id: generateId(),
-  }
-
-  notes = notes.concat(note)
-
-  response.json(note)
-})
-
-// const password = process.argv[2]
-// const url =
-//   `mongodb+srv://StinaSoile:${password}@fullstack-course-cluste.ixcnawg.mongodb.net/noteApp?retryWrites=true&w=majority&appName=fullstack-course-cluster1`
-
-// mongoose.set('strictQuery', false)
-// mongoose.connect(url)
-
-// const noteSchema = new mongoose.Schema({
-//   content: String,
-//   important: Boolean,
+// let notes = [
+//   {
+//     id: 1,
+//     content: "HTML is easy",
+//     important: true
+//   },
+//   {
+//     id: 2,
+//     content: "Browser can execute only JavaScript",
+//     important: false
+//   },
+//   {
+//     id: 3,
+//     content: "GET and POST are the most important methods of HTTP protocol",
+//     important: true
+//   }
+// ]
+// app.get('/', (request, response) => {
+//   response.send('<h1>Hello World!</h1>')
 // })
 
-// const Note = mongoose.model('Note', noteSchema)
+// app.get('/api/notes', (request, response) => {
+//   Note.find({}).then(notes => {
+//     response.json(notes)
+//   })
+// })
 
-const PORT = 3001
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-})
+// app.get('/api/notes/:id', (request, response, next) => {
+//   Note.findById(request.params.id).then(note => {
+//     // response.json(note)
+//     if (note) { response.json(note) }
+//     else { response.status(404).end() }
+//   })
+//     .catch(error => next(error))
+// })
+
+// app.delete('/api/notes/:id', (request, response) => {
+//   const id = Number(request.params.id)
+//   notes = notes.filter(note => note.id !== id)
+
+//   response.status(204).end()
+// })
+
+// app.post('/api/notes', (request, response) => {
+//   const body = request.body
+
+//   if (!body.content) {
+//     return response.status(400).json({
+//       error: 'content missing'
+//     })
+//   }
+
+//   const note = new Note({
+//     content: body.content,
+//     important: body.important || false,
+//   })
+
+//   note.save().then(savedNote => {
+//     response.json(savedNote)
+//   })
+// })
+
+// const PORT = process.env.PORT
+// app.listen(PORT, () => {
+//   console.log(`Server running on port ${PORT}`)
+// })
